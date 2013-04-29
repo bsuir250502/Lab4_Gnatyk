@@ -32,8 +32,7 @@ extern "C" {
         result[strlen(s) - 1] = '\0';
         return result;
     }
-
-    tree* create_a_tree( struct tree* tree)
+ tree* create_a_tree( struct tree* tree)
     {
         int size_data = SIZE(tree->data);
         if(tree){
@@ -49,8 +48,7 @@ extern "C" {
         tree->n = 1;
         return tree;
     }
-
-    void add_nodes_to_the_tree(struct tree* tree)
+      void add_nodes_to_the_tree(struct tree* tree)
     {
         struct tree *tr1, *tr2;
         char * st;
@@ -134,8 +132,8 @@ extern "C" {
         char s[input_buf_size];
         int c;
         puts("1. add information");
-        puts("2. delete information ");
-        puts("3. see details");
+        puts("2. see details ");
+        puts("3. search max");
         puts("4. Help"); 
         puts("5. to exit");
         do{
@@ -157,9 +155,25 @@ extern "C" {
         }
     }
 
+    tree * search_node_maximum_value(struct tree * current,struct tree*max)
+    {
+        
+        if(current->left){
+            max = search_node_maximum_value(current->left,max);
+        }
+        if(current->ringht){
+            max = search_node_maximum_value(current->ringht,max);
+        }
+        if(max->data > current->data){
+                printf("the minimum value : %s\n",max->data);
+            }
+            printf("the minimum value : %s\n",current->data);
+            return 0;
+    }
+
     int main()
     {
-        struct tree* tree = NULL ;
+        struct tree* tree = NULL;
         tree = create_a_tree(tree);
         char choice;
         while(1){
@@ -171,8 +185,10 @@ extern "C" {
             case 2 : 
                 see_tree(tree);break;
             case 3 :
-                checkHelp();break;
+                 search_node_maximum_value(tree,tree);break;
             case 4 :
+                checkHelp();break;
+            case 5 :
                 exit(0);break;
             }
         }
