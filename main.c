@@ -2,7 +2,6 @@
 extern "C" {
 #endif
 #include <stdio.h>
-#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <malloc.h>
@@ -12,8 +11,9 @@ extern "C" {
     struct tree{
         char* data;
         struct tree * left;
-        struct tree * ringht;
+        struct tree * right;
         int n;
+
     };
 
     void clear_screen()
@@ -32,7 +32,7 @@ extern "C" {
         result[strlen(s) - 1] = '\0';
         return result;
     }
- tree* create_a_tree( struct tree* tree)
+    tree* create_a_tree( struct tree* tree)
     {
         int size_data = SIZE(tree->data);
         if(tree){
@@ -42,13 +42,14 @@ extern "C" {
             puts("There is no free memory");
             return NULL;
         }
-        puts("enter the information");
+        puts("Click any number,to fill the root of the tree");
         tree->data = (char*)calloc(1,sizeof(char)*N);
         gets_s(tree->data,size_data);
         tree->n = 1;
         return tree;
     }
-      void add_nodes_to_the_tree(struct tree* tree)
+
+    void add_nodes_to_the_tree(struct tree* tree)
     {
         struct tree *tr1, *tr2;
         char * st;
@@ -56,7 +57,7 @@ extern "C" {
         int flag;
         int st_size = SIZE(st);
         if(!tree){
-            puts("Нет корня дерева\n");
+            puts("no root\n");
             return;
         }
         do{
@@ -82,8 +83,8 @@ extern "C" {
                         else flag = 1;
                     }
                     else{
-                        if(tr1->ringht){
-                            tr1= tr1->ringht;
+                        if(tr1->right){
+                            tr1= tr1->right;
                         }
                         else flag = 1;
                     }
@@ -100,7 +101,7 @@ extern "C" {
                     tr1->left = tr2;
                 }
                 else{
-                    tr1->ringht = tr2;
+                    tr1->right = tr2;
                 }
                 tr2->data = (char*)calloc(1,sizeof(char)*N);
                 strcpy(tr2->data,st);
@@ -115,11 +116,11 @@ extern "C" {
         printf
             ("=============================================================================================================\n"
             "MANUAL:\n"
-            "Enter information about the students: last name, \n"
+            "filling the tree information \n"
             "=================================OPTIONS=====================================================================\n"
-            "1. add a node in the tree\n"
-            "2. If you want to move out of the hostel\n"
-            "3. If you want to view a list of students living in a hostel\n"
+            "1. input tree root\n"
+            "2. tree view\n"
+            "3. maximum viewing element node\n"
             "4. Help\n"
             "5. Exit\n"
             "=============================================================================================================\n");
@@ -146,46 +147,57 @@ extern "C" {
         return c;
     }
 
-    void see_tree (struct tree * tr1)
+    void see_tree (struct tree * tr1,int level)
     {
         if(tr1){
-            printf("node contains a: %s,number of meetings%d\n",tr1->data,tr1->n);
-            if(tr1->left) see_tree(tr1->left);
-            if(tr1->ringht) see_tree(tr1->ringht);
+            see_tree(tr1->right,level+5);
+        }
+        for(int i = 0; i < level; ++i){
+            printf("   ");
+        }
+        if(tr1){
+            printf("%s\n",tr1->data);
+        }
+        else printf("\n");
+        if(tr1){
+            see_tree(tr1->left,level+5);
         }
     }
 
-    tree * search_node_maximum_value(struct tree * current,struct tree*max)
+
+    tree * search_node_maximum_value(struct tree * current,struct tree*max) 
     {
-        
-        if(current->left){
-            max = search_node_maximum_value(current->left,max);
+        if(current->data > max->data){
+            max = current;
         }
-        if(current->ringht){
-            max = search_node_maximum_value(current->ringht,max);
+        if(current->left){ 
+            max = search_node_maximum_value(current->left,max); 
         }
-        if(max->data > current->data){
-                printf("the minimum value : %s\n",max->data);
-            }
-            printf("the minimum value : %s\n",current->data);
-            return 0;
+        if(current->right){
+            max = search_node_maximum_value(current->right,max); 
+        }
+        return max;
     }
 
     int main()
     {
+        int level = 0;
+        struct tree* max=0;
         struct tree* tree = NULL;
         tree = create_a_tree(tree);
         char choice;
         while(1){
             choice = menu_select();
+
             switch (choice){
             case 1 : 
                 add_nodes_to_the_tree( tree);
                 break;
             case 2 : 
-                see_tree(tree);break;
+                see_tree(tree,level);break;
             case 3 :
-                 search_node_maximum_value(tree,tree);break;
+                max = search_node_maximum_value(tree,tree);
+                printf("maximym: %s\n ", max->data );break;
             case 4 :
                 checkHelp();break;
             case 5 :
