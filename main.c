@@ -34,7 +34,6 @@ extern "C" {
     }
     tree* create_a_tree( struct tree* tree)
     {
-        int size_data = SIZE(tree->data);
         if(tree){
             return(tree);
         }
@@ -44,7 +43,7 @@ extern "C" {
         }
         puts("Click any number,to fill the root of the tree");
         tree->data = (char*)calloc(1,sizeof(char)*N);
-        gets_s(tree->data,size_data);
+        gets_s(tree->data,N);
         tree->n = 1;
         return tree;
     }
