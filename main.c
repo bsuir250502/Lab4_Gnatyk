@@ -16,14 +16,6 @@ extern "C" {
 
     };
 
-    void clear_screen()
-    {
-#ifdef _WIN32
-        system("cls");
-#else
-        system("clear");
-#endif
-    }
 
     char*gets_s(char *s, size_t buf_size)
     {
@@ -123,7 +115,7 @@ extern "C" {
             "4. Help\n"
             "5. Exit\n"
             "=============================================================================================================\n");
-        exit(0);
+        return 0;
 
     }
 
@@ -142,7 +134,6 @@ extern "C" {
             c = atoi(s);
         }
         while (c < 0 || c > 5);
-        clear_screen();
         return c;
     }
 
