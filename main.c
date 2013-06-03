@@ -102,7 +102,7 @@ extern "C" {
         }while(1);
     }
 
-    void checkHelp(void)
+    void check_help(void)
     {
         printf
             ("=============================================================================================================\n"
@@ -189,7 +189,7 @@ extern "C" {
                 max = search_node_maximum_value(tree,tree);
                 printf("maximym: %s\n ", max->data );break;
             case 4 :
-                checkHelp();break;
+                check_help();break;
             case 5 :
                 exit(0);break;
             }
